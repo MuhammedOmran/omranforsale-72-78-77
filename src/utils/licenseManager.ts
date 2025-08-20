@@ -216,6 +216,17 @@ export class LicenseManager {
         maxUsers: 100,
         features: ['all_features']
       };
+    } else if (key.startsWith('OMRAN-INVESTORS-') || key.includes('-INVESTORS-')) {
+      const expiryDate = new Date();
+      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+      
+      return {
+        isValid: true,
+        type: 'enterprise',
+        expiryDate: expiryDate.toISOString(),
+        maxUsers: 1000,
+        features: ['all_features']
+      };
     } else {
       return {
         isValid: false,

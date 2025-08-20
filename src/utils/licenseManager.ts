@@ -172,7 +172,8 @@ export class LicenseManager {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // تحليل مفتاح الترخيص - يدعم التنسيق الجديد والقديم
-    if (key.startsWith('OMRAN-TRIAL-') || key.includes('-TRIAL-')) {
+    const normalized = key.replace(/\s+/g, '').toUpperCase();
+    if (normalized.startsWith('OMRAN-TRIAL-') || normalized.includes('-TRIAL-')) {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 6);
       
@@ -183,7 +184,7 @@ export class LicenseManager {
         maxUsers: 1,
         features: ['basic_accounting', 'inventory', 'reports']
       };
-    } else if (key.startsWith('OMRAN-BASIC-') || key.includes('-BASIC-')) {
+    } else if (normalized.startsWith('OMRAN-BASIC-') || normalized.includes('-BASIC-')) {
       const expiryDate = new Date();
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
       
@@ -194,7 +195,7 @@ export class LicenseManager {
         maxUsers: 3,
         features: ['basic_accounting', 'inventory', 'reports', 'backup']
       };
-    } else if (key.startsWith('OMRAN-PRO-') || key.includes('-PRO-') || key.includes('-PROFESSIONAL-')) {
+    } else if (normalized.startsWith('OMRAN-PRO-') || normalized.includes('-PRO-') || normalized.includes('-PROFESSIONAL-')) {
       const expiryDate = new Date();
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
       
@@ -205,7 +206,7 @@ export class LicenseManager {
         maxUsers: 10,
         features: ['all_features']
       };
-    } else if (key.startsWith('OMRAN-ENTERPRISE-') || key.includes('-ENTERPRISE-')) {
+    } else if (normalized.startsWith('OMRAN-ENTERPRISE-') || normalized.includes('-ENTERPRISE-')) {
       const expiryDate = new Date();
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
       
@@ -216,7 +217,7 @@ export class LicenseManager {
         maxUsers: 100,
         features: ['all_features']
       };
-    } else if (key.startsWith('OMRAN-INVESTORS-') || key.includes('-INVESTORS-')) {
+    } else if (normalized.startsWith('OMRAN-INVESTORS-') || normalized.includes('-INVESTORS-')) {
       const expiryDate = new Date();
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
       

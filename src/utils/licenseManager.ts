@@ -171,8 +171,8 @@ export class LicenseManager {
     // محاكاة التحقق من الخادم
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // تحليل مفتاح الترخيص
-    if (key.startsWith('OMRAN-TRIAL-')) {
+    // تحليل مفتاح الترخيص - يدعم التنسيق الجديد والقديم
+    if (key.match(/^OMRAN-TRIAL-/)) {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 6);
       
@@ -183,7 +183,7 @@ export class LicenseManager {
         maxUsers: 1,
         features: ['basic_accounting', 'inventory', 'reports']
       };
-    } else if (key.startsWith('OMRAN-BASIC-')) {
+    } else if (key.match(/^OMRAN-BASIC-/)) {
       const expiryDate = new Date();
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
       
@@ -194,7 +194,7 @@ export class LicenseManager {
         maxUsers: 3,
         features: ['basic_accounting', 'inventory', 'reports', 'backup']
       };
-    } else if (key.startsWith('OMRAN-PRO-')) {
+    } else if (key.match(/^OMRAN-PRO-/)) {
       const expiryDate = new Date();
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
       
@@ -205,10 +205,21 @@ export class LicenseManager {
         maxUsers: 10,
         features: ['all_features']
       };
+    } else if (key.match(/^OMRAN-ENTERPRISE-/)) {
+      const expiryDate = new Date();
+      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+      
+      return {
+        isValid: true,
+        type: 'enterprise',
+        expiryDate: expiryDate.toISOString(),
+        maxUsers: 100,
+        features: ['all_features']
+      };
     } else {
       return {
         isValid: false,
-        error: 'مفتاح الترخيص غير صحيح'
+        error: 'مفتاح الترخيص غير صحيح أو بتنسيق خاطئ'
       };
     }
   }

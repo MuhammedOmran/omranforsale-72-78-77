@@ -19,8 +19,6 @@ import { toast } from 'sonner';
 
 export function LicenseActivation() {
   const [licenseKey, setLicenseKey] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [companyEmail, setCompanyEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentLicense, setCurrentLicense] = useState<any>(null);
   const [validationResult, setValidationResult] = useState<any>(null);
@@ -36,25 +34,20 @@ export function LicenseActivation() {
   };
 
   const handleActivation = async () => {
-    if (!licenseKey || !companyName || !companyEmail) {
-      toast.error("يرجى ملء جميع الحقول المطلوبة");
+    if (!licenseKey) {
+      toast.error("يرجى إدخال مفتاح الترخيص");
       return;
     }
 
     setIsLoading(true);
     try {
-      const result = await LicenseManager.activateLicense(licenseKey, {
-        name: companyName,
-        email: companyEmail
-      });
+      const result = await LicenseManager.activateLicense(licenseKey);
 
       if (result.success) {
         toast.success("تم تفعيل الترخيص بنجاح!");
         
         await checkCurrentLicense();
         setLicenseKey('');
-        setCompanyName('');
-        setCompanyEmail('');
       } else {
         toast.error(result.error || "حدث خطأ في التفعيل");
       }
@@ -207,27 +200,6 @@ export function LicenseActivation() {
               placeholder="أدخل مفتاح الترخيص"
               value={licenseKey}
               onChange={(e) => setLicenseKey(e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="company-name">اسم الشركة</Label>
-            <Input
-              id="company-name"
-              placeholder="أدخل اسم الشركة"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="company-email">البريد الإلكتروني</Label>
-            <Input
-              id="company-email"
-              type="email"
-              placeholder="أدخل البريد الإلكتروني للشركة"
-              value={companyEmail}
-              onChange={(e) => setCompanyEmail(e.target.value)}
             />
           </div>
 

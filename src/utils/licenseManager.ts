@@ -125,9 +125,9 @@ export class LicenseManager {
   /**
    * تفعيل ترخيص جديد
    */
-  static async activateLicense(licenseKey: string, companyInfo: {
-    name: string;
-    email: string;
+  static async activateLicense(licenseKey: string, companyInfo?: {
+    name?: string;
+    email?: string;
     phone?: string;
   }): Promise<{ success: boolean; error?: string }> {
     try {
@@ -144,8 +144,8 @@ export class LicenseManager {
         expiryDate: validation.expiryDate!,
         maxUsers: validation.maxUsers!,
         features: validation.features!,
-        companyName: companyInfo.name,
-        contactEmail: companyInfo.email
+        companyName: companyInfo?.name || 'شركة غير محددة',
+        contactEmail: companyInfo?.email || ''
       };
 
       localStorage.setItem(this.LICENSE_KEY, JSON.stringify(license));

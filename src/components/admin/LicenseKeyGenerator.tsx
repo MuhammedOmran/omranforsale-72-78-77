@@ -96,7 +96,17 @@ export function LicenseKeyGenerator() {
     }
 
     const timestamp = Date.now();
-    const prefix = licenseType.toUpperCase();
+    
+    // تحديد البادئة الصحيحة لكل نوع ترخيص
+    const prefixMap = {
+      'trial': 'TRIAL',
+      'basic': 'BASIC', 
+      'professional': 'PRO',
+      'enterprise': 'ENTERPRISE',
+      'investors': 'INVESTORS'
+    };
+    
+    const prefix = prefixMap[licenseType as keyof typeof prefixMap] || licenseType.toUpperCase();
     const hash = btoa(clientEmail + timestamp).slice(0, 8).toUpperCase();
     const key = `OMRAN-${prefix}-${new Date().getFullYear()}-${hash}`;
 
@@ -129,7 +139,7 @@ export function LicenseKeyGenerator() {
 
     toast({
       title: "تم إنشاء الترخيص!",
-      description: "تم إنشاء مفتاح الترخيص بنجاح وتحديث قالب الإرسال",
+      description: `تم إنشاء مفتاح الترخيص: ${key}`,
     });
 
     // إعادة تعيين النموذج
